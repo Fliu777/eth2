@@ -54,12 +54,12 @@ class BondHandler:
         #clear 1ks
         for order in buySide:
             if order[0]==1000:
-                if self.currentPos-order[1] >-90:
+                if self.currentPos-order[1] >-10:
 		    print ("Selling at 1000")
                     self.sendOrder(False,order[1],1000)
         for order in sellSide:
             if order[0]==1000:
-                if self.currentPos+order[1] <90:
+                if self.currentPos+order[1] <10:
 		    print ("Buying at 1000")
                     self.sendOrder(True,order[1],1000)
         #self.sendOrder(False,1,1001)
