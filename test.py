@@ -28,9 +28,7 @@ def run(server, PORT):
     obj = client.read()
 
     if obj['type'] == "book":
-      orders = []
-      orders.extend(obj['buy'])
-      orders.extend(obj['sell'])
+      orders = [obj['buy'],obj['sell'] ]
       symbol = obj['symbol']
       if symbol not in book:
         book[symbol] = []
