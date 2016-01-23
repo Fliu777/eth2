@@ -27,10 +27,10 @@ class BondHandler:
         }
         if isBuy:
 	    buy_sell_msg['dir'] = "BUY"
-	    BondHandler.connection.send(json.dumps(buy_sell_msg))
+	    BondHandler.connection.send(buy_sell_msg)
         else:
 	    buy_sell_msg['dir'] = "SELL"
-	    BondHandler.connection.send(json.dumps(buy_sell_msg))
+	    BondHandler.connection.send(buy_sell_msg)
 
     def updatePrice(self, buyPrices=[], sellPrices=[]):
         if BondHandler.buyOrder:

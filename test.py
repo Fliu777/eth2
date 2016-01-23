@@ -36,7 +36,6 @@ def run(server, PORT):
 
     if obj['type'] == 'open':
       if 'BOND' in obj['symbols']:
-         print ("HI")
          bh = BondHandler.BondHandler(client)
 
     if obj['type'] == 'close':
