@@ -38,6 +38,7 @@ class VALETrader:
             self.connection.send(buy_sell_msg)
 
     def getOrderBooks(self, book):
+        print(book)
         print("in order books?")
         liquid=book['VALBZ']
         print (liquid)
