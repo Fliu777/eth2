@@ -26,7 +26,8 @@ def run(server, PORT):
 
   while True:
     obj = client.read()
-    bh.updatePrice()
+    if bh:
+      bh.updatePrice()
 
     if obj['type'] == "book":
       orders = [obj['buy'],obj['sell'] ]
