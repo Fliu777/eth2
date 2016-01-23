@@ -3,7 +3,9 @@ class VALETrader:
     def __init__(self,connection):
         print("wtf")
         self.connection=connection
-        self.curLiquidPos=0
+        self.VALEcurLiquidPos=0
+        self.VALBZcurLiquidPos=0
+
         print ("starting?")
 
     def sendOrder(self, isBuy, name,amount, price):
@@ -52,6 +54,18 @@ class VALETrader:
         #print (nonLiquid)
         buypricenonLiquid=nonLiquid[-1][0][0][0]
         sellpricenonLiquid=nonLiquid[-1][1][0][0]
+
+        if self.VALEcurLiquidPos>0:
+            self.sendOrder(False, "VALE", self.VALEcurLiquidPos, sellpricenonLiquid)
+        elif self.VALEcurLiquidPos<0:
+            self.sendOrder(True, "VALE", self.VALEcurLiquidPos, buypricenonLiquid)
+
+        if self.VALBZcurLiquidPos>0:
+            self.sendOrder(False, "VALBZ", self.VALBZcurLiquidPos, sellpriceLiquid)
+        elif self.VALBZcurLiquidPos<0:
+            self.sendOrder(True, "VALBZ", self.VALBZcurLiquidPos, buypriceLiquid)
+
+
         #print(buypricenonLiquid)
         #print(buypriceLiquid)
 
@@ -80,10 +94,16 @@ class VALETrader:
 
     def fillOrder(self, obj): #stock is of type STOCK
         vol=int(obj['size'])
-        if obj['dir']=="BUY":
-            self.LiquidPos+=vol
+        if obj['symbol']=='VALE':
+            if obj['dir']=="BUY":
+                self.VALEcurLiquidPos+=vol
+            else:
+                self.VALEcurLiquidPos-=vol
         else:
-            self.LiquidPos-=vol
+            if obj['dir']=="BUY":
+                self.VALBZcurLiquidPos+=vol
+            else:
+                self.VALBZcurLiquidPos-=vol
 
 
 
