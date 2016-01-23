@@ -4,6 +4,7 @@ import sys
 import time
 import json
 from time import gmtime, strftime
+import traceback
 
 import Client
 
@@ -41,10 +42,13 @@ def run(server, PORT):
       symbol = obj['symbol']
       if symbol not in book:
         book[symbol] = []
-      book[symbol].extend(orders)
-      bh.handleBook(book)
-      
-      vc.feed(obj)
+      book[symbol].append(orders)
+      try:
+          bh.handleBook(book, obj['symbol'])
+
+          vc.feed(obj)
+      except Exception as e:
+	  traceback.print_exc()
 
     if obj['type'] == 'open':
       if 'BOND' in obj['symbols']:
