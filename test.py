@@ -47,10 +47,10 @@ def run(server, PORT):
       book[symbol].append(orders)
 
       if obj['symbol'] == 'BOND':
-        bh.handleBook(book, obj['symbol'])
+        if bh: bh.handleBook(book, obj['symbol'])
 
       if obj['symbol'] == 'VALE' or obj['symbol'] == 'VALBZ':
-        vh.getOrderBooks(book)
+        if vh: vh.getOrderBooks(book)
 
       vc.feed(obj)
   
