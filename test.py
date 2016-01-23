@@ -47,7 +47,7 @@ def run(server, PORT):
         book[symbol] = []
       book[symbol].append(orders)
 
-      if obj['symbol'] = 'VALE':
+      if obj['symbol'] == 'VALE':
       	process_vale(book)
 
       if obj['symbol'] == 'BOND':
