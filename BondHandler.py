@@ -34,7 +34,7 @@ class BondHandler:
             self.connection.send(buy_sell_msg)
 
     def floodMarket(self):
-    	print ("Flooding")
+    	#print ("Flooding")
         self.sendOrder(True,1,999)
         self.sendOrder(False,1,1001)
 
@@ -47,25 +47,25 @@ class BondHandler:
             self.sendOrder(False,1,sellPrices[0][0])
         else:
             self.sendOrder(False,1,1001)
-    def handleBook(self, book):
+    def handleBook(self, book, update_for):
+        if update_for is not "BOND":
+	    return 
         bond_book = book['BOND']
-        last=book[-1]
-	print ("LL")
-	print (last)
-        buySide=last[0]
-        sellSide=last[1]
+        buySide=bond_book[-1][0]
+	sellSide=bond_book[-1][1]
         #clear 1ks
         for order in buySide:
             if order[0]==1000:
-                if self.currentPos-order[1] <-90:
+                if self.currentPos-order[1] >-10:
+		    print ("Selling at 1000")
                     self.sendOrder(False,order[1],1000)
         for order in sellSide:
             if order[0]==1000:
-                if self.currentPos+order[1] >90:
+                if self.currentPos+order[1] <10:
+		    print ("Buying at 1000")
                     self.sendOrder(True,order[1],1000)
-	print (book[-1])
-        self.sendOrder(False,1,1001)
-        self.sendOrder(True,1,999)
+        #self.sendOrder(False,1,1001)
+        #self.sendOrder(True,1,999)
 
     def fillOrder(self, obj): #stock is of type STOCK
         vol=int(obj['size'])
