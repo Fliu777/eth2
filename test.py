@@ -28,6 +28,8 @@ def run(server, PORT):
 
   vc = ValueCalculator()
 
+  t1 = time.time()
+
   while True:
     obj = client.read()
     if bh:
@@ -55,6 +57,12 @@ def run(server, PORT):
       if bh:
         if obj['symbol'] == 'BOND':
           bh.fillOrder(obj)
+
+
+    t2 = time.time()
+    if t2 - t1 > 10:
+      vc.report()
+      t1 = t2
 
     time.sleep(0.011)
 

@@ -35,7 +35,15 @@ class ValueCalculator:
 
     self.stocks[obj['symbol']].append(tot/num)
 
-    print(tot/num, obj['symbol'])
+    # print(tot/num, obj['symbol'])
 
   def get(self, stock):
     return self.stocks[stock][-1]
+
+  def report(self, stock):
+    with f = open("sequence.log", 'w+'):
+      f.write(str(self.stocks['VALBZ']) + '\n')
+      f.write(str(self.stocsk['VALE']) + '\n')
+      print(self.stocks['VALBZ'][-1])
+      print(self.stocks['VALE'][-1])
+
