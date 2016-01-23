@@ -6,6 +6,7 @@ import json
 from time import gmtime, strftime
 import traceback
 
+
 import Client
 
 from ValueCalculator import ValueCalculator
@@ -23,8 +24,10 @@ def run(server, PORT):
   client.send({"type":"hello", "team": "JANEAVENUE"})
 
   import BondHandler
+  import VALE
 
   bh = None
+  vh=None
   book = {}
 
   vc = ValueCalculator()
@@ -53,15 +56,21 @@ def run(server, PORT):
     if obj['type'] == 'open':
       if 'BOND' in obj['symbols']:
          bh = BondHandler.BondHandler(client)
+      if 'VALE' in obj['symbols'] and 'VALBZ' in obj['symbols']:
+        vh= VALE.VALETrader(client)
+
 
     if obj['type'] == 'close':
       if 'BOND' in obj['symbols']:
         bh = None
+      if 'VALE' in obj['symbols'] and 'VALBZ' in obj['symbols']:
+        vh = None
 
     if obj['type'] == 'fill':
       if bh:
         if obj['symbol'] == 'BOND':
           bh.fillOrder(obj)
+    vh.getOrderBooks(book)
 
 
     t2 = time.time()
