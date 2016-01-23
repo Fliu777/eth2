@@ -29,6 +29,7 @@ def run(server, PORT):
 
   vc = ValueCalculator()
 
+  t0 = time.time()
   t1 = time.time()
 
   while True:
