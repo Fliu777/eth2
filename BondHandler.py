@@ -34,6 +34,7 @@ class BondHandler:
             self.connection.send(buy_sell_msg)
 
     def floodMarket(self):
+    	print ("Flooding")
         self.sendOrder(True,1,999)
         self.sendOrder(False,1,1001)
 
