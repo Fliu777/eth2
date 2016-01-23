@@ -47,8 +47,8 @@ def run(server, PORT):
         book[symbol] = []
       book[symbol].append(orders)
 
-      if obj['symbol'] == 'VALE':
-      	process_vale(book)
+      if obj['symbol'] == 'XLF':
+      	process(book, "XLF", client)
 
       if obj['symbol'] == 'BOND':
         bh.handleBook(book, obj['symbol'])
@@ -80,7 +80,7 @@ def run(server, PORT):
     time.sleep(0.02)
 
 counter = 0
-def sendOrder(isBuy, amount, price):
+def sendOrder(isBuy, amount, price, client):
     counter+=1
     buy_sell_msg = {
         "type": "add",
@@ -92,13 +92,13 @@ def sendOrder(isBuy, amount, price):
     }
     if isBuy:
         buy_sell_msg['dir'] = "BUY"
-        self.connection.send(buy_sell_msg)
+        client.connection.send(buy_sell_msg)
     else:
         buy_sell_msg['dir'] = "SELL"
-        self.connection.send(buy_sell_msg)
+        client.connection.send(buy_sell_msg)
 
-def process_vale(local_book):
-    vale_book = local_book['VALE']
+def process(local_book, symbol, client):
+    vale_book = local_book[symbol]
     if len(vale_book) >= 5:
 	values = vale_book[-5:-1]
 
@@ -114,10 +114,10 @@ def process_vale(local_book):
 	        if order[0] > best_sell:
 			best_sell = order[0]
 
-        sendOrder(True, 1, best_buy)
-        sendOrder(False, 1, best_sell)
+        sendOrder(True, 1, best_buy, client)
+        sendOrder(False, 1, best_sell, client)
     
-        book['VALE'] = []
+        return True
 
     
        
