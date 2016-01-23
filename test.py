@@ -43,7 +43,7 @@ def run(server, PORT):
           bh.handleBook(book)
 
           vc.feed(obj)
-      except as e:
+      except Exception as e:
           print ("An error occured {}".format(e.message))
 
     if obj['type'] == 'open':
