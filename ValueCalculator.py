@@ -30,7 +30,7 @@ class ValueCalculator:
         tot += price * size
         num += size
 
-    stocks[obj['symbol']].append(tot/num)
+    self.stocks[obj['symbol']].append(tot/num)
 
     print(tot/num, obj, file=sys.stderr)
 

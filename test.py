@@ -39,9 +39,12 @@ def run(server, PORT):
       if symbol not in book:
         book[symbol] = []
       book[symbol].extend(orders)
-      bh.handleBook(book)
+      try:
+          bh.handleBook(book)
 
-      vc.feed(obj)
+          vc.feed(obj)
+      except as e:
+          print ("An error occured {}".format(e.message))
 
     if obj['type'] == 'open':
       if 'BOND' in obj['symbols']:
