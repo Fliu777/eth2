@@ -40,10 +40,12 @@ class VALETrader:
     def getOrderBooks(self, book):
         print("in order books?")
         liquid=book['VALBZ']
+        print (liquid)
         buypriceLiquid=liquid[-1][0][0]
         sellpriceLiquid=liquid[-1][0][1]
 
         nonLiquid=book['VALE']
+        print (nonLiquid)
         buypricenonLiquid=nonLiquid[-1][0][0]
         sellpricenonLiquid=nonLiquid[-1][0][1]
         print(buypricenonLiquid)
