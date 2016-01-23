@@ -7,7 +7,7 @@ from time import gmtime, strftime
 
 import Client
 
-import ValueCalculator from ValueCalculator
+from ValueCalculator import ValueCalculator
 
 def run(server, PORT):
   IP = socket.gethostbyname(server)

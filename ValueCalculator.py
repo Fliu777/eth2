@@ -1,17 +1,17 @@
 from __future__ import print_function
 import sys
 
-class ValueCalculator
+class ValueCalculator:
   
   def __init__(self):
     self.stocks = {
-      "BOND": []
-      "VALBZ": []
-      "VALE": []
-      "GS": []
-      "MS": []
-      "WFC": []
-      "XLF": []
+      "BOND": [],
+      "VALBZ": [],
+      "VALE": [],
+      "GS": [],
+      "MS": [],
+      "WFC": [],
+      "XLF": [],
     }
 
   def feed(self, obj):
