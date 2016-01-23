@@ -2,6 +2,7 @@ from __future__ import print_function
 import socket
 import sys
 import time
+import json
 from time import gmtime, strftime
 
 import Client
@@ -14,7 +15,7 @@ def run(server):
 
   logfile = open("log." + strftime("%H%M%S", gmtime()) + ".txt", "w")
 
-  client = Client(IP, PORT)
+  client = Client.Client(IP, PORT, logfile)
 
   client.send({"type":"hello", "team": "JANEAVENUE"})
 
@@ -41,15 +42,15 @@ def run(server):
     time.sleep(0.011)
 
 if __name__ == '__main__':
+  server = "test-exch-janeavenue"
   if len(sys.argv) > 1:
     server = sys.argv[1]
-  else:
-    server = "test-exch-janeavenue"
- 
-  while True;
+  print(server) 
+  while True:
     try:
       run(server)
-    except: 
+    except Exception as e:
+      print(e) 
       pass
     time.sleep(1)
 
