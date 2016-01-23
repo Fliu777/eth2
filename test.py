@@ -56,14 +56,13 @@ def run(server, PORT):
     if obj['type'] == 'open':
       if 'BOND' in obj['symbols']:
          bh = BondHandler.BondHandler(client)
-    vh= VALE.VALETrader(client)
-    print("initiating??")
-
+      if 'VALE' in obj['symbols'] and 'VALBZ' in obj['symbols']:
+        vh= VALE.VALETrader(client)
 
     if obj['type'] == 'close':
       if 'BOND' in obj['symbols']:
         bh = None
-      if 'VALE' in obj['symbols'] and 'VALBZ' in obj['symbols']:
+      if 'VALE' in obj['symbols'] or 'VALBZ' in obj['symbols']:
         vh = None
 
     if obj['type'] == 'fill':
