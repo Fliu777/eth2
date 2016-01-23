@@ -71,8 +71,12 @@ def run(server, PORT):
       if bh:
         if obj['symbol'] == 'BOND':
           bh.fillOrder(obj)
-    vh.getOrderBooks(book)
+    
 
+#vh.getOrderBooks(book)
+    t2 = time.time()
+    if t2 - t1 > 1:
+      print("ping")
 
     t2 = time.time()
     if t2 - t1 > 5:
