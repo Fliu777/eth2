@@ -43,7 +43,7 @@ def run(server, PORT):
 
 if __name__ == '__main__':
   server = "test-exch-janeavenue"
-  port = 2500  
+  port = 25000  
   if len(sys.argv) > 1:
     server = sys.argv[1]
   if len(sys.argv) > 2:
