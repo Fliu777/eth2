@@ -50,6 +50,12 @@ def run(server, PORT):
       if obj['symbol'] == 'XLF':
       	if process(book, "XLF", client):
 	  book['XLF'] = []
+      if obj['symbol'] == 'MS':
+      	if process(book, "MS", client):
+	  book['MS'] = []
+      if obj['symbol'] == 'GS':
+      	if process(book, "GS", client):
+	  book['GS'] = []
 
       if obj['symbol'] == 'BOND':
         bh.handleBook(book, obj['symbol'])
@@ -113,7 +119,7 @@ def process(local_book, symbol, client):
 			best_buy = order[0]
 	
             for order in frame[1]:
-	        if order[0] > best_sell:
+	        if order[0] < best_sell:
 			best_sell = order[0]
 
         sendOrder(True, 10, best_buy, symbol, client)
