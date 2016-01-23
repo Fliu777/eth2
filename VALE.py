@@ -57,13 +57,20 @@ class VALETrader:
 
         if self.VALEcurLiquidPos>0:
             self.sendOrder(False, "VALE", self.VALEcurLiquidPos, sellpricenonLiquid)
+            print("dump extra")
         elif self.VALEcurLiquidPos<0:
             self.sendOrder(True, "VALE", self.VALEcurLiquidPos, buypricenonLiquid)
+            print("dump extra")
+
 
         if self.VALBZcurLiquidPos>0:
             self.sendOrder(False, "VALBZ", self.VALBZcurLiquidPos, sellpriceLiquid)
+            print("dump extra")
+
         elif self.VALBZcurLiquidPos<0:
             self.sendOrder(True, "VALBZ", self.VALBZcurLiquidPos, buypriceLiquid)
+            print("dump extra")
+
 
 
         #print(buypricenonLiquid)
