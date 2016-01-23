@@ -98,9 +98,9 @@ def sendOrder(self, isBuy, amount, price):
         self.connection.send(buy_sell_msg)
 
 def process_vale(local_book):
-    valbz_book = local_book['VALE']
+    vale_book = local_book['VALE']
     if len(valbz_book) >= 5:
-	values = local_book[-5:-1]
+	values = vale_book[-5:-1]
 
 	best_sell = 10000000
 	best_buy = 0
