@@ -79,9 +79,9 @@ def run(server, PORT):
       t1 = t2
     time.sleep(0.02)
 
-counter = 0
+counter = 200000
 def sendOrder(isBuy, amount, price, client):
-    counter+=1
+    global counter+=1
     buy_sell_msg = {
         "type": "add",
         "order_id": counter,
