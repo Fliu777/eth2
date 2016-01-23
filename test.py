@@ -25,6 +25,14 @@ def run(server):
   while True:
     obj = client.read()
 
+    if obj['type'] == "book":
+      orders = []
+      orders.extend(obj['buy'])
+      orders.extend(obj['sell'])
+      book = {
+        obj['symbol']: orders
+      }
+
     if obj['type'] == 'open':
       if 'BOND' in obj['symbols']:
          bh = BondHandler.BondHandler(client)
