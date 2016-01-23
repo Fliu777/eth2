@@ -96,7 +96,7 @@ if __name__ == '__main__':
     try:
       run(server, port)
     except Exception as e:
-      print(e) 
+      print(e.message)
       pass
     time.sleep(1)
 
