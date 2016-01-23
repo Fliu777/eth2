@@ -1,24 +1,26 @@
 import random
+
 class BondHandler:
     connection=None
     buyOrder=True
     sellOrder=True
     counter=0
+    currentPos=0
+
     def __init__(self, connection):
         BondHandler.connection=connection
-        self.sendOrder(True, 1,999)
-        self.sendOrder(False, 1,1001)
+        self.sendOrder(True, 100,999)
+        self.sendOrder(False, 100,1001)
         pass
-    def sendOrder(self, isBuy, price, amount):
-        price *= 50
+    def sendOrder(self, isBuy, amount, price):
         if isBuy:
             BondHandler.counter+=1
-            BondHandler.connection.send("ADD "+str(BondHandler.counter)+" BOND BUY "+str(amount)+" "+str(price))
+            BondHandler.connection.send("ADD "+str(BondHandler.counter)+" BOND BUY "+str(price)+" "+str(amount))
         else:
             BondHandler.counter+=1
-            BondHandler.connection.send("ADD "+str(BondHandler.counter)+" BOND SELL "+str(amount)+" "+str(price))
+            BondHandler.connection.send("ADD "+str(BondHandler.counter)+" BOND SELL "+str(price)+" "+str(amount))
         pass
-    def updatePrice(self, stock, buyPrices=[], sellPrices=[]):
+    def updatePrice(self, buyPrices=[], sellPrices=[]):
         if BondHandler.buyOrder:
             self.sendOrder(True,1,999)
             #buyOrder=False
@@ -28,9 +30,22 @@ class BondHandler:
         elif BondHandler.sellOrder:
             self.sendOrder(False,1,1001)
 
-    def fillOrder(self, stock, orderbook): #stock is of type STOCK
-        if stock.volume>0:
-            #buy order executed
-            BondHandler.buyOrder=False
+    def fillOrder(self, obj): #stock is of type STOCK
+        vol=int(obj['size'])
+        if obj['dir']=="BUY":
+            BondHandler.currentPos+=vol
         else:
+            BondHandler.currentPos-=vol
+        BondHandler.buyOrder=BondHandler.sellOrder=True
+        if BondHandler.currentPos>75:
+            BondHandler.sendOrder(False,BondHandler.currentPos,1000)
+        elif BondHandler.currentPos<-75:
+            BondHandler.sendOrder(True,BondHandler.currentPos,1000)
+        elif BondHandler.currentPos==100:
+            BondHandler.buyOrder=False
+        elif BondHandler.currentPos==-100:
             BondHandler.sellOrder=False
+        else:
+            BondHandler.updatePrice()
+            #cant do anything
+
