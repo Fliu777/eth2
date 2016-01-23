@@ -3,15 +3,13 @@ class VALETrader:
 
     def __init__(self,connection):
         self.connection=connection
-
         self.curLiquidPos=0
-        pass
 
     def sendOrder(self, isBuy, name,amount, price):
         self.counter+=1
         buy_sell_msg = {
             "type": "ADD",
-            "order_id": random.randint(3000,10000000),
+            "order_id": random.randint(3000,1000000),
             "symbol": name,
             "dir": None,
             "price": price,
@@ -26,7 +24,7 @@ class VALETrader:
     def convert(self, isBuy, name,amount):
         buy_sell_msg = {
             "type": "CONVERT",
-            "order_id": random.randint(3000,10000000),
+            "order_id": random.randint(3000,1000000),
             "symbol": "VALBZ",
             "dir": None,
             "size": amount,
@@ -40,11 +38,12 @@ class VALETrader:
 
     def getOrderBooks(self, book):
         liquid=book['VALBZ']
-        buypriceLiquid=liquid[0][0]
-        sellpriceLiquid=liquid[1][0]
+        buypriceLiquid=liquid[-1][0][0]
+        sellpriceLiquid=liquid[-1][0][1]
+
         nonLiquid=book['VALE']
-        buypricenonLiquid=nonLiquid[0][0]
-        sellpricenonLiquid=nonLiquid[1][0]
+        buypricenonLiquid=nonLiquid[-1][0][0]
+        sellpricenonLiquid=nonLiquid[-1][0][1]
 
         #liquidValue=0 # getValue('VALBZ')
         #nonLiquid=0 #getValue('VALE')
@@ -59,6 +58,7 @@ class VALETrader:
                 self.sendOrder(False, "VALBZ", most, sellpriceLiquid)            #buy the non liquid
                 self.sendOrder(True, "VALE", most, buypricenonLiquid)              #sell liquid
                 self.convert(False, most)
+                print("doing smth")
 
         if sellpricenonLiquid-buypriceLiquid>0:
             diff=sellpricenonLiquid-buypriceLiquid
@@ -66,6 +66,8 @@ class VALETrader:
                 self.sendOrder(True, "VALBZ", most, buypriceLiquid)            #sell non liquid
                 self.sendOrder(False, "VALE", most, sellpricenonLiquid)              #buy liquid
                 self.convert(True, most)
+                print("reverse arbitrage")
+
     def fillOrder(self, obj): #stock is of type STOCK
         vol=int(obj['size'])
         if obj['dir']=="BUY":
