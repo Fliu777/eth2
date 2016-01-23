@@ -48,7 +48,8 @@ def run(server, PORT):
       book[symbol].append(orders)
 
       if obj['symbol'] == 'XLF':
-      	process(book, "XLF", client)
+      	if process(book, "XLF", client):
+	  book['XLF'] = []
 
       if obj['symbol'] == 'BOND':
         bh.handleBook(book, obj['symbol'])
