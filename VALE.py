@@ -38,6 +38,7 @@ class VALETrader:
             self.connection.send(buy_sell_msg)
 
     def getOrderBooks(self, book):
+        print("in order books?")
         liquid=book['VALBZ']
         buypriceLiquid=liquid[-1][0][0]
         sellpriceLiquid=liquid[-1][0][1]
@@ -45,6 +46,8 @@ class VALETrader:
         nonLiquid=book['VALE']
         buypricenonLiquid=nonLiquid[-1][0][0]
         sellpricenonLiquid=nonLiquid[-1][0][1]
+        print(buypricenonLiquid)
+        print(buypriceLiquid)
 
         #liquidValue=0 # getValue('VALBZ')
         #nonLiquid=0 #getValue('VALE')
