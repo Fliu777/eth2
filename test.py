@@ -60,7 +60,7 @@ def run(server, PORT):
 
 
     t2 = time.time()
-    if t2 - t1 > 10:
+    if t2 - t1 > 5:
       vc.report()
       t1 = t2
 
