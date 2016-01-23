@@ -116,8 +116,8 @@ def process(local_book, symbol, client):
 	        if order[0] > best_sell:
 			best_sell = order[0]
 
-        sendOrder(True, 1, best_buy, symbol, client)
-        sendOrder(False, 1, best_sell, symbol, client)
+        sendOrder(True, 10, best_buy, symbol, client)
+        sendOrder(False, 10, best_sell, symbol, client)
     
         return True
 
