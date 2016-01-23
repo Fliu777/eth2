@@ -80,13 +80,13 @@ def run(server, PORT):
     time.sleep(0.02)
 
 counter = 200000
-def sendOrder(isBuy, amount, price, client):
+def sendOrder(isBuy, amount, price, symbol, client):
     global counter
     counter+=1
     buy_sell_msg = {
         "type": "add",
         "order_id": counter,
-        "symbol": "VALE",
+        "symbol": symbol,
         "dir": None,
         "price": price,
         "size": amount,
@@ -115,8 +115,8 @@ def process(local_book, symbol, client):
 	        if order[0] > best_sell:
 			best_sell = order[0]
 
-        sendOrder(True, 1, best_buy, client)
-        sendOrder(False, 1, best_sell, client)
+        sendOrder(True, 1, best_buy, symbol, client)
+        sendOrder(False, 1, best_sell, symbol, client)
     
         return True
 
