@@ -30,6 +30,8 @@ def run(server, PORT):
 
   while True:
     obj = client.read()
+    if bh:
+      bh.floodMarket()
 
     if obj['type'] == "book":
       orders = [obj['buy'],obj['sell'] ]
