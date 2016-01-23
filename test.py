@@ -1,48 +1,46 @@
-import socket 
-import sys 
-import timer
+from __future__ import print_function
+import socket
+import sys
+import time
+from time import gmtime, strftime
 
-#IP = socket.gethostbyname('test-exch-janeavenue')
-IP = socket.gethostbyname('production')
-PORT = 25000
+import Client
 
-TEAMNAME = 'JANEAVANUE'
+def run(server):
+  IP = socket.gethostbyname(server)
+  #IP = "1.1.1.1"
+  print(IP)
+  PORT = 25000
 
-class Client:
-  BUFFER_SIZE = 1024
-  
-  def __init__(self, ip, port):
-    self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    self.socket.connect((ip, port))
-    self.file = self.socket.makefile('w+', 1)
+  logfile = open("log." + strftime("%H%M%S", gmtime()) + ".txt", "w")
 
-  def send(self, message):
-    print(message, file=self.file)
+  client = Client(IP, PORT)
 
-  def close(self):
-    self.socket.close()
+  client.send("HELLO JANEAVENUE\n")
 
-  def update(self):
-    while self.file.readline().strip():
+  import BondHandler
 
-
-
-s = Client(IP, PORT)
-
-print(s.send("hello\n"))
-
-s.close()
-
-
-if __name__ == '__main__':
-
-  c = Client()
-
+  bh = BondHandler.BondHandler(client)
 
   while True:
-    c.update()
+    obj = client.read()
 
-    timer.sleep(0.05)
+    bh.updatePrice(None)
+
+    time.sleep(0.1)
+
+if __name__ == '__main__':
+  if len(sys.argv) > 1:
+    server = sys.argv[1]
+  else:
+    server = "test-exch-janeavenue"
+ 
+  while True;
+    try:
+      run(server)
+    except: 
+      pass
+    time.sleep(1)
 
 
 
