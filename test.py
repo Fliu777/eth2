@@ -30,6 +30,7 @@ def run(server, PORT):
   vh=None
   book = {}
 
+  my_orders = {}
   vc = ValueCalculator()
 
   t0 = time.time()
@@ -45,6 +46,9 @@ def run(server, PORT):
       if symbol not in book:
         book[symbol] = []
       book[symbol].append(orders)
+
+      if obj['symbol'] = 'VALE':
+      	process_vale(book)
 
       if obj['symbol'] == 'BOND':
         bh.handleBook(book, obj['symbol'])
@@ -74,6 +78,53 @@ def run(server, PORT):
       vc.report()
       t1 = t2
     time.sleep(0.011)
+
+counter = 0
+def sendOrder(self, isBuy, amount, price):
+    counter+=1
+    buy_sell_msg = {
+        "type": "add",
+        "order_id": counter,
+        "symbol": "VALE",
+        "dir": None,
+        "price": price,
+        "size": amount,
+    }
+    if isBuy:
+        buy_sell_msg['dir'] = "BUY"
+        self.connection.send(buy_sell_msg)
+    else:
+        buy_sell_msg['dir'] = "SELL"
+        self.connection.send(buy_sell_msg)
+
+def process_vale(local_book):
+    valbz_book = local_book['VALE']
+    if len(valbz_book) >= 5:
+	values = local_book[-5:-1]
+
+	best_sell = 10000000
+	best_buy = 0
+
+	for frame in values:
+            for order in frame[0]:
+	        if order[0] > best_buy:
+			best_buy = order[0]
+	
+            for order in frame[1]:
+	        if order[0] > best_sell:
+			best_sell = order[0]
+
+    sendOrder(True, 1, best_buy)
+    sendOrder(False, 1, best_sell)
+
+    book['VALE'] = []
+
+    
+       
+	
+
+
+
 
 if __name__ == '__main__':
   server = "test-exch-janeavenue"
