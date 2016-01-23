@@ -82,3 +82,12 @@ class BondHandler:
             self.updatePrice()
             #cant do anything
 
+	if self.currentPos>0:
+	    self.sendOrder(True, 100 - self.currentPos, 999)
+	else:
+	    self.sendOrder(True, 100, 999)
+
+	if self.currentPos<0:
+	    self.sendOrder(False, - self.currentPos + 100, 1001)
+	else:
+	    self.sendOrder(False, 100, 1001)
