@@ -34,13 +34,13 @@ class BondHandler:
             self.connection.send(buy_sell_msg)
 
     def updatePrice(self, buyPrices=[], sellPrices=[]):
-        if self.buyOrder:
-            self.sendOrder(True,100,999)
+        if True:
+            self.sendOrder(True,1,999)
             #buyOrder=False
         if self.buyOrder and len(sellPrices)>0 and sellPrices[0][0]>=1000:
             #sell at 1000, which is fair value
             self.sendOrder(False,1,sellPrices[0][0])
-        elif self.sellOrder:
+        else:
             self.sendOrder(False,1,1001)
     def handleBook(self, book):
         bond_book = book['BOND']
