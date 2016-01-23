@@ -48,11 +48,15 @@ class BondHandler:
         #clear 1ks
         for order in buySide:
             if order[0]==1000:
-                BondHandler.sendOrder(False,order[0],1000)
+                if BondHandler.currentPos-order[1] <-90:
+                    BondHandler.sendOrder(False,order[0],1000)
         for order in sellSide:
             if order[0]==1000:
-                BondHandler.sendOrder(True,order[0],1000)
-
+                if BondHandler.currentPos+order[1] >90:
+                    BondHandler.sendOrder(True,order[0],1000)
+        if BondHandler.counter%10==0:
+            BondHandler.sendOrder(False,1,1001)
+            BondHandler.sendOrder(True,1,999)
 
     def fillOrder(self, obj): #stock is of type STOCK
         vol=int(obj['size'])
