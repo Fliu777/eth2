@@ -44,6 +44,8 @@ class BondHandler:
             self.sendOrder(False,1,1001)
     def handleBook(self, book):
         last=book[-1]
+	print ("LL")
+	print (last)
         buySide=last[0]
         sellSide=last[1]
         #clear 1ks
