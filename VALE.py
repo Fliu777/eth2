@@ -7,10 +7,9 @@ class VALETrader:
         print ("starting?")
 
     def sendOrder(self, isBuy, name,amount, price):
-        self.counter+=1
         buy_sell_msg = {
-            "type": "ADD",
-            "order_id": random.randint(3000,1000000),
+            "type": "add",
+            "order_id": random.randint(10000,1000000),
             "symbol": name,
             "dir": None,
             "price": price,
@@ -22,10 +21,11 @@ class VALETrader:
         else:
             buy_sell_msg['dir'] = "SELL"
             self.connection.send(buy_sell_msg)
-    def convert(self, isBuy, name,amount):
+    def convert(self, isBuy,amount):
+        #return
         buy_sell_msg = {
-            "type": "CONVERT",
-            "order_id": random.randint(3000,1000000),
+            "type": "convert",
+            "order_id": random.randint(10000,1000000),
             "symbol": "VALBZ",
             "dir": None,
             "size": amount,
@@ -38,27 +38,29 @@ class VALETrader:
             self.connection.send(buy_sell_msg)
 
     def getOrderBooks(self, book):
-        print(book)
-        print("in order books?")
+        if 'VALBZ' not in book or 'VALE' not in book:
+            return
         liquid=book['VALBZ']
-        if not liquid: return
-        print (liquid)
-        buypriceLiquid=liquid[-1][0][0]
-        sellpriceLiquid=liquid[-1][0][1]
-
         nonLiquid=book['VALE']
-        print (nonLiquid)
-        buypricenonLiquid=nonLiquid[-1][0][0]
-        sellpricenonLiquid=nonLiquid[-1][0][1]
-        print(buypricenonLiquid)
-        print(buypriceLiquid)
+        if len(liquid[-1][0]) == 0 or len(liquid[-1][1]) == 0 or len(nonLiquid[-1][0]) == 0 or len(nonLiquid[-1][1]) == 0:
+            return
+
+        #print (liquid[-1])
+        buypriceLiquid=liquid[-1][0][0][0]
+        sellpriceLiquid=liquid[-1][1][0][0]
+
+        #print (nonLiquid)
+        buypricenonLiquid=nonLiquid[-1][0][0][0]
+        sellpricenonLiquid=nonLiquid[-1][1][0][0]
+        #print(buypricenonLiquid)
+        #print(buypriceLiquid)
 
         #liquidValue=0 # getValue('VALBZ')
         #nonLiquid=0 #getValue('VALE')
         possibleProfit=0
         cost=10
         slippage=5
-        most=10-self.LiquidPos
+        most=5
         # valbz is the liquid one
         if sellpriceLiquid-buypricenonLiquid>0:
             diff=sellpriceLiquid-buypricenonLiquid
