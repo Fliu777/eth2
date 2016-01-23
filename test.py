@@ -58,6 +58,9 @@ def run(server, PORT):
         vh.getOrderBooks(book)
 
       vc.feed(obj)
+
+    if obj['type'] == "out":
+      process_out(my_orders, obj['order_id'])
   
     if obj['type'] == 'open':
       if 'BOND' in obj['symbols']:
@@ -116,11 +119,27 @@ def process(local_book, symbol, client):
 	        if order[0] < best_sell:
 			best_sell = order[0]
 
-        sendOrder(True, 10, best_buy, symbol, client)
-        sendOrder(False, 10, best_sell, symbol, client)
+        sendOrder(True, 5, best_buy, symbol, client)
+        sendOrder(False, 5, best_sell, symbol, client)
     
         return True
 
+
+def process_outs(orders, order, client):
+    if out in orders:
+        del order[out]
+
+    for o in orders:
+        order[o] += 1
+	if order[o] > 3:
+	    #Send cancel
+	    client.send({"type": "cancel", "order_id": o})
+
+	    del order[o]
+
+
+    
+        
     
        
 	
