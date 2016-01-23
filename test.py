@@ -80,7 +80,7 @@ def run(server, PORT):
     time.sleep(0.02)
 
 counter = 0
-def sendOrder(self, isBuy, amount, price):
+def sendOrder(isBuy, amount, price):
     counter+=1
     buy_sell_msg = {
         "type": "add",
@@ -99,7 +99,7 @@ def sendOrder(self, isBuy, amount, price):
 
 def process_vale(local_book):
     vale_book = local_book['VALE']
-    if len(valbz_book) >= 5:
+    if len(vale_book) >= 5:
 	values = vale_book[-5:-1]
 
 	best_sell = 10000000
