@@ -33,6 +33,10 @@ class BondHandler:
             buy_sell_msg['dir'] = "SELL"
             self.connection.send(buy_sell_msg)
 
+    def floodMarket(self):
+        self.sendOrder(True,1,999)
+        self.sendOrder(False,1,1001)
+
     def updatePrice(self, buyPrices=[], sellPrices=[]):
         if True:
             self.sendOrder(True,1,999)
