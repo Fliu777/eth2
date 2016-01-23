@@ -1,11 +1,11 @@
 import socket 
 import sys 
 import timer
+from __future__ import print_function
 
-#IP = socket.gethostbyname('test-exch-janeavenue')
-IP = socket.gethostbyname('production')
-PORT = 25000
-
+IP = socket.gethostbyname('test-exch-janeavenue')
+#IP = socket.gethostbyname('production')
+PORT = 20000
 TEAMNAME = 'JANEAVANUE'
 
 class Client:
@@ -22,27 +22,22 @@ class Client:
   def close(self):
     self.socket.close()
 
-  def update(self):
-    while self.file.readline().strip():
+  def read(self):
+    return self.file.readline().strip()
 
 
+client = Client(IP, PORT)
 
-s = Client(IP, PORT)
+client.send("HELLO JANEAVANUE")
 
-print(s.send("hello\n"))
+import BondHandler
 
-s.close()
+bh = BondHandler.BondHandler(client)
 
+while True:
+  data = client.read()
 
-if __name__ == '__main__':
+  bh.updatePrice(None)
 
-  c = Client()
-
-
-  while True:
-    c.update()
-
-    timer.sleep(0.05)
-
-
+  timer.sleep(0.1)
 

@@ -1,8 +1,8 @@
 import random
 class BondHandler:
     connection=None
-    buyOrder=False
-    sellOrder=False
+    buyOrder=True
+    sellOrder=True
     counter=0
     def __init__(self, connection):
         BondHandler.connection=connection
@@ -12,10 +12,10 @@ class BondHandler:
     def sendOrder(self, isBuy, amount, price):
         if isBuy:
             BondHandler.counter+=1
-            return "ADD "+str(BondHandler.counter)+" BOND BUY "+str(amount)+" "+str(price)
+            connection.send("ADD "+str(BondHandler.counter)+" BOND BUY "+str(amount)+" "+str(price))
         else:
             BondHandler.counter+=1
-            return "ADD "+str(BondHandler.counter)+" BOND SELL "+str(amount)+" "+str(price)
+            connection.send("ADD "+str(BondHandler.counter)+" BOND SELL "+str(amount)+" "+str(price))
         pass
     def updatePrice(self, stock, buyPrices=[], sellPrices=[]):
         if BondHandler.buyOrder:
