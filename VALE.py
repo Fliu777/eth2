@@ -38,17 +38,20 @@ class VALETrader:
             self.connection.send(buy_sell_msg)
 
     def getOrderBooks(self, book):
-        print(book)
-        print("in order books?")
         liquid=book['VALBZ']
+
+        if len(liquid[-1][0]) == 0 || len(liquid[-1][1]) == 0 ||
+            len(nonLiquid[-1][0]) == 0 || len(nonLiquid[-1][1]) == 0:
+            return
+
         print (liquid)
-        buypriceLiquid=liquid[-1][0][0]
-        sellpriceLiquid=liquid[-1][0][1]
+        buypriceLiquid=liquid[-1][0][0][0]
+        sellpriceLiquid=liquid[-1][0][1][0]
 
         nonLiquid=book['VALE']
         print (nonLiquid)
-        buypricenonLiquid=nonLiquid[-1][0][0]
-        sellpricenonLiquid=nonLiquid[-1][0][1]
+        buypricenonLiquid=nonLiquid[-1][0][0][0]
+        sellpricenonLiquid=nonLiquid[-1][0][1][0]
         print(buypricenonLiquid)
         print(buypriceLiquid)
 
@@ -57,7 +60,7 @@ class VALETrader:
         possibleProfit=0
         cost=10
         slippage=5
-        most=10-self.LiquidPos
+        most=5
         # valbz is the liquid one
         if sellpriceLiquid-buypricenonLiquid>0:
             diff=sellpriceLiquid-buypricenonLiquid

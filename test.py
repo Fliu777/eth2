@@ -40,24 +40,25 @@ def run(server, PORT):
     if bh:
       bh.floodMarket()
     if obj['type'] == "book":
-      orders = [obj['buy'],obj['sell'] ]
+      orders = [obj['buy'],obj['sell']]
       symbol = obj['symbol']
       if symbol not in book:
         book[symbol] = []
       book[symbol].append(orders)
-      try:
-          bh.handleBook(book, obj['symbol'])
 
-          vc.feed(obj)
-      except Exception as e:
-          print(e)
-	  traceback.print_exc()
+      if obj['symbol'] == 'BOND':
+        bh.handleBook(book, obj['symbol'])
+
+      if obj['symbol'] == 'VALE' or obj['symbol'] == 'VALBZ':
+        vh.getOrderBooks(book)
+
+      vc.feed(obj)
   
     if obj['type'] == 'open':
       if 'BOND' in obj['symbols']:
          bh = BondHandler.BondHandler(client)
       if 'VALE' in obj['symbols'] and 'VALBZ' in obj['symbols']:
-        pass#vh= VALE.VALETrader(client)
+        vh= VALE.VALETrader(client)
     if obj['type'] == 'close':
       if 'BOND' in obj['symbols']:
         bh = None
@@ -67,7 +68,6 @@ def run(server, PORT):
       if bh:
         if obj['symbol'] == 'BOND':
           bh.fillOrder(obj)
-    if vh: pass #vh.getOrderBooks(book)
 
     t2 = time.time()
     if t2 - t1 > 5:
