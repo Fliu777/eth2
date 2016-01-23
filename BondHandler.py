@@ -12,6 +12,18 @@ class BondHandler:
         self.sendOrder(True, 100,999)
         self.sendOrder(False, 100,1001)
         pass
+
+    def send(self, id, price, amount, dir):
+        BondHandler.connection.send(
+                {'type': 'add',
+                 'order_id': id,
+                 'symbol': "BOND",
+                 'dir': dir
+
+                }
+
+        )
+
     def sendOrder(self, isBuy, amount, price):
         if isBuy:
             BondHandler.counter+=1
@@ -40,7 +52,7 @@ class BondHandler:
         if BondHandler.currentPos>75:
             BondHandler.sendOrder(False,BondHandler.currentPos,1000)
         elif BondHandler.currentPos<-75:
-            BondHandler.sendOrder(True,BondHandler.currentPos,1000)
+            BondHandler.sendOrder(True,-BondHandler.currentPos,1000)
         elif BondHandler.currentPos==100:
             BondHandler.buyOrder=False
         elif BondHandler.currentPos==-100:
