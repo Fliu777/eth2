@@ -1,6 +1,6 @@
 class Stock
-    def __init__(self, symbol, amount, volume):
+    def __init__(self, symbol, price, volume):
         self.symbol=symbol
-        self.amount=amount
+        self.price=price
         self.volume=volume
         pass
