@@ -16,18 +16,29 @@ def run(server):
 
   client = Client(IP, PORT)
 
-  client.send("HELLO JANEAVENUE\n")
+  client.send({"type":"hello", "team": "JANEAVENUE"})
 
   import BondHandler
 
-  bh = BondHandler.BondHandler(client)
+  bh = None
 
   while True:
     obj = client.read()
 
-    bh.updatePrice(None)
+    if obj['type'] == 'open':
+      if 'BOND' in obj['symbols']:
+         bh = BondHandler.BondHandler(client)
 
-    time.sleep(0.1)
+    if obj['type'] == 'close':
+      if 'BOND' in obj['symbols']:
+        bh = None
+
+    if obj['type'] == 'fill':
+      if bh:
+        if obj['symbol'] == 'BOND':
+          bh.fillOrder(obj)
+
+    time.sleep(0.011)
 
 if __name__ == '__main__':
   if len(sys.argv) > 1:
