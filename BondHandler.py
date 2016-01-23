@@ -43,6 +43,7 @@ class BondHandler:
         elif self.sellOrder:
             self.sendOrder(False,1,1001)
     def handleBook(self, book):
+        bond_book = book['BOND']
         last=book[-1]
 	print ("LL")
 	print (last)
