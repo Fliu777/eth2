@@ -13,25 +13,24 @@ class BondHandler:
         self.sendOrder(False, 100,1001)
         pass
 
-    def send(self, id, price, amount, dir):
-        BondHandler.connection.send(
-                {'type': 'add',
-                 'order_id': id,
-                 'symbol': "BOND",
-                 'dir': dir
-
-                }
-
-        )
 
     def sendOrder(self, isBuy, amount, price):
+        BondHandler.counter+=1
+        buy_sell_msg = {
+	    "type": "add",
+	    "order_id": BondHandler.counter,
+	    "symbol": "BOND",
+	    "dir": None,
+	    "price": price,
+	    "size": amount,
+        }
         if isBuy:
-            BondHandler.counter+=1
-            BondHandler.connection.send("ADD "+str(BondHandler.counter)+" BOND BUY "+str(price)+" "+str(amount))
+	    buy_sell_msg['dir'] = "BUY"
+	    BondHandler.connection.send(json.dumps(buy_sell_msg))
         else:
-            BondHandler.counter+=1
-            BondHandler.connection.send("ADD "+str(BondHandler.counter)+" BOND SELL "+str(price)+" "+str(amount))
-        pass
+	    buy_sell_msg['dir'] = "SELL"
+	    BondHandler.connection.send(json.dumps(buy_sell_msg))
+
     def updatePrice(self, buyPrices=[], sellPrices=[]):
         if BondHandler.buyOrder:
             self.sendOrder(True,1,999)
