@@ -93,10 +93,10 @@ def sendOrder(isBuy, amount, price, client):
     }
     if isBuy:
         buy_sell_msg['dir'] = "BUY"
-        client.connection.send(buy_sell_msg)
+        client.send(buy_sell_msg)
     else:
         buy_sell_msg['dir'] = "SELL"
-        client.connection.send(buy_sell_msg)
+        client.send(buy_sell_msg)
 
 def process(local_book, symbol, client):
     vale_book = local_book[symbol]
