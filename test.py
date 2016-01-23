@@ -114,10 +114,10 @@ def process_vale(local_book):
 	        if order[0] > best_sell:
 			best_sell = order[0]
 
-    sendOrder(True, 1, best_buy)
-    sendOrder(False, 1, best_sell)
-
-    book['VALE'] = []
+        sendOrder(True, 1, best_buy)
+        sendOrder(False, 1, best_sell)
+    
+        book['VALE'] = []
 
     
        
