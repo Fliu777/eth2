@@ -56,7 +56,7 @@ def run(server, PORT):
     if obj['type'] == 'open':
       if 'BOND' in obj['symbols']:
          bh = BondHandler.BondHandler(client)
-    vh= VALE.VALE(client)
+    vh= VALE.VALETrader(client)
     print("initiating??")
 
 
