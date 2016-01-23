@@ -41,6 +41,7 @@ class VALETrader:
         print(book)
         print("in order books?")
         liquid=book['VALBZ']
+        if not liquid: return
         print (liquid)
         buypriceLiquid=liquid[-1][0][0]
         sellpriceLiquid=liquid[-1][0][1]
