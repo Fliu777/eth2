@@ -40,7 +40,7 @@ def run(server, PORT):
         book[symbol] = []
       book[symbol].extend(orders)
       bh.handleBook(book)
-
+      
       vc.feed(obj)
 
     if obj['type'] == 'open':
