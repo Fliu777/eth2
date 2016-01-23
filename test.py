@@ -56,9 +56,8 @@ def run(server, PORT):
     if obj['type'] == 'open':
       if 'BOND' in obj['symbols']:
          bh = BondHandler.BondHandler(client)
-      if 'VALE' in obj['symbols'] and 'VALBZ' in obj['symbols']:
-        vh= VALE.VALE(client)
-        print("initiating??")
+    vh= VALE.VALETrader(client)
+    print("initiating??")
 
 
     if obj['type'] == 'close':
@@ -72,6 +71,7 @@ def run(server, PORT):
         if obj['symbol'] == 'BOND':
           bh.fillOrder(obj)
     
+    if vh: vh.getOrderBooks(book)
 
 #vh.getOrderBooks(book)
     t2 = time.time()
