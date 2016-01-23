@@ -81,7 +81,8 @@ def run(server, PORT):
 
 counter = 200000
 def sendOrder(isBuy, amount, price, client):
-    global counter+=1
+    global counter
+    counter+=1
     buy_sell_msg = {
         "type": "add",
         "order_id": counter,
