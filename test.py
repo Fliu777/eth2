@@ -50,12 +50,6 @@ def run(server, PORT):
       if obj['symbol'] == 'XLF':
       	if process(book, "XLF", client):
 	  book['XLF'] = []
-      if obj['symbol'] == 'MS':
-      	if process(book, "MS", client):
-	  book['MS'] = []
-      if obj['symbol'] == 'GS':
-      	if process(book, "GS", client):
-	  book['GS'] = []
 
       if obj['symbol'] == 'BOND':
         bh.handleBook(book, obj['symbol'])
