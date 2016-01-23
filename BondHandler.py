@@ -49,24 +49,17 @@ class BondHandler:
             self.sendOrder(False,1,1001)
     def handleBook(self, book):
         bond_book = book['BOND']
-        last=bond_book[-1]
-	print ("LL")
-	print (last)
-        buySide=last[0]
-        sellSide=last[1]
-	print ("AAA")
+        buySide=bond_book['buy']
+        sellSide=bond_book['sell']
         #clear 1ks
         for order in buySide:
             if order[0]==1000:
                 if self.currentPos-order[1] <-90:
                     self.sendOrder(False,order[1],1000)
-	print ("BBB")
         for order in sellSide:
             if order[0]==1000:
                 if self.currentPos+order[1] >90:
                     self.sendOrder(True,order[1],1000)
-	print ("CCC")
-	print (book[-1])
         self.sendOrder(False,1,1001)
         self.sendOrder(True,1,999)
 

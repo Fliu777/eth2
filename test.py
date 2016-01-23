@@ -38,8 +38,9 @@ def run(server, PORT):
       orders = [obj['buy'],obj['sell'] ]
       symbol = obj['symbol']
       if symbol not in book:
-        book[symbol] = []
-      book[symbol].extend(orders)
+        book[symbol] = {"buy": [], "sell": []}
+      book[symbol]['buy'].extend(obj['buy'])
+      book[symbol]['sell'].extend(obj['sell'])
       try:
           bh.handleBook(book)
 
