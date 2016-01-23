@@ -25,6 +25,7 @@ class Client:
 
   def read(self):
     data = self.file.readline().strip() 
+    #print(data)
     if self.logf: self.logf.write(data + '\n')
     #print(data)
     return json.loads(data)
