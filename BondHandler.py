@@ -10,6 +10,7 @@ class BondHandler:
         self.sendOrder(False, 1,1001)
         pass
     def sendOrder(self, isBuy, price, amount):
+        price *= 50
         if isBuy:
             BondHandler.counter+=1
             BondHandler.connection.send("ADD "+str(BondHandler.counter)+" BOND BUY "+str(amount)+" "+str(price))
