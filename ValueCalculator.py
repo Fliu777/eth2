@@ -41,7 +41,7 @@ class ValueCalculator:
     return self.stocks[stock][-1]
 
   def report(self, stock):
-    with f = open("sequence.log", 'w+'):
+    with open("sequence.log", 'w+') as f:
       f.write(str(self.stocks['VALBZ']) + '\n')
       f.write(str(self.stocsk['VALE']) + '\n')
       print(self.stocks['VALBZ'][-1])
