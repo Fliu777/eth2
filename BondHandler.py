@@ -49,8 +49,8 @@ class BondHandler:
             self.sendOrder(False,1,1001)
     def handleBook(self, book):
         bond_book = book['BOND']
-        buySide=bond_book['buy']
-        sellSide=bond_book['sell']
+        buySide=bond_book[-1][0]
+	sellSide=bond_book[-1][1]
         #clear 1ks
         for order in buySide:
             if order[0]==1000:
