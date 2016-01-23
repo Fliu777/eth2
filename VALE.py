@@ -7,10 +7,9 @@ class VALETrader:
         print ("starting?")
 
     def sendOrder(self, isBuy, name,amount, price):
-        self.counter+=1
         buy_sell_msg = {
-            "type": "ADD",
-            "order_id": random.randint(3000,1000000),
+            "type": "add",
+            "order_id": random.randint(10000,1000000),
             "symbol": name,
             "dir": None,
             "price": price,
@@ -22,10 +21,11 @@ class VALETrader:
         else:
             buy_sell_msg['dir'] = "SELL"
             self.connection.send(buy_sell_msg)
-    def convert(self, isBuy, name,amount):
+    def convert(self, isBuy,amount):
+        #return
         buy_sell_msg = {
-            "type": "CONVERT",
-            "order_id": random.randint(3000,1000000),
+            "type": "convert",
+            "order_id": random.randint(10000,1000000),
             "symbol": "VALBZ",
             "dir": None,
             "size": amount,
@@ -38,22 +38,22 @@ class VALETrader:
             self.connection.send(buy_sell_msg)
 
     def getOrderBooks(self, book):
+        if 'VALBZ' not in book or 'VALE' not in book:
+            return
         liquid=book['VALBZ']
-
-        if len(liquid[-1][0]) == 0 || len(liquid[-1][1]) == 0 ||
-            len(nonLiquid[-1][0]) == 0 || len(nonLiquid[-1][1]) == 0:
+        nonLiquid=book['VALE']
+        if len(liquid[-1][0]) == 0 or len(liquid[-1][1]) == 0 or len(nonLiquid[-1][0]) == 0 or len(nonLiquid[-1][1]) == 0:
             return
 
-        print (liquid)
+        #print (liquid[-1])
         buypriceLiquid=liquid[-1][0][0][0]
-        sellpriceLiquid=liquid[-1][0][1][0]
+        sellpriceLiquid=liquid[-1][1][0][0]
 
-        nonLiquid=book['VALE']
-        print (nonLiquid)
+        #print (nonLiquid)
         buypricenonLiquid=nonLiquid[-1][0][0][0]
-        sellpricenonLiquid=nonLiquid[-1][0][1][0]
-        print(buypricenonLiquid)
-        print(buypriceLiquid)
+        sellpricenonLiquid=nonLiquid[-1][1][0][0]
+        #print(buypricenonLiquid)
+        #print(buypriceLiquid)
 
         #liquidValue=0 # getValue('VALBZ')
         #nonLiquid=0 #getValue('VALE')

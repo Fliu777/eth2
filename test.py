@@ -77,7 +77,7 @@ def run(server, PORT):
     if t2 - t1 > 5:
       vc.report()
       t1 = t2
-    time.sleep(0.011)
+    time.sleep(0.02)
 
 counter = 0
 def sendOrder(self, isBuy, amount, price):
@@ -137,8 +137,8 @@ if __name__ == '__main__':
   while True:
     try:
       run(server, port)
-    except Exception as e:
-      print(e)
+    except Exception, e:
+      traceback.print_exc()
       #print(e.message)
       pass
     time.sleep(1)
