@@ -41,7 +41,7 @@ def run(server, PORT):
         book[symbol] = []
       book[symbol].append(orders)
       try:
-          bh.handleBook(book)
+          bh.handleBook(book, obj['symbol'])
 
           vc.feed(obj)
       except Exception as e:

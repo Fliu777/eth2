@@ -47,7 +47,9 @@ class BondHandler:
             self.sendOrder(False,1,sellPrices[0][0])
         else:
             self.sendOrder(False,1,1001)
-    def handleBook(self, book):
+    def handleBook(self, book, update_for):
+        if update_for is not "BOND":
+	    return 
         bond_book = book['BOND']
         buySide=bond_book[-1][0]
 	sellSide=bond_book[-1][1]
