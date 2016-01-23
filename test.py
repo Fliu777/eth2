@@ -7,11 +7,11 @@ from time import gmtime, strftime
 
 import Client
 
-def run(server):
+def run(server, PORT):
   IP = socket.gethostbyname(server)
   #IP = "1.1.1.1"
-  print(IP)
-  PORT = 25000
+  PORT = int(port)
+  print(IP, PORT)
 
   logfile = open("log." + strftime("%H%M%S", gmtime()) + ".txt", "w")
 
@@ -51,12 +51,15 @@ def run(server):
 
 if __name__ == '__main__':
   server = "test-exch-janeavenue"
+  port = 2500  
   if len(sys.argv) > 1:
     server = sys.argv[1]
+  if len(sys.argv) > 2:
+    port = sys.argv[2]
   print(server) 
   while True:
     try:
-      run(server)
+      run(server, port)
     except Exception as e:
       print(e) 
       pass
