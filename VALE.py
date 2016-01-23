@@ -1,9 +1,10 @@
 import random
 class VALETrader:
-
     def __init__(self,connection):
+        print("wtf")
         self.connection=connection
         self.curLiquidPos=0
+        print ("starting?")
 
     def sendOrder(self, isBuy, name,amount, price):
         self.counter+=1
