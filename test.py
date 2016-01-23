@@ -4,6 +4,7 @@ import sys
 import time
 import json
 from time import gmtime, strftime
+import traceback
 
 import Client
 
@@ -44,7 +45,7 @@ def run(server, PORT):
 
           vc.feed(obj)
       except Exception as e:
-          print ("An error occured {}".format(e.message))
+	  traceback.print_exc()
 
     if obj['type'] == 'open':
       if 'BOND' in obj['symbols']:
