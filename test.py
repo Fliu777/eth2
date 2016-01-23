@@ -7,6 +7,8 @@ from time import gmtime, strftime
 
 import Client
 
+import ValueCalculator from ValueCalculator
+
 def run(server, PORT):
   IP = socket.gethostbyname(server)
   #IP = "1.1.1.1"
@@ -24,6 +26,8 @@ def run(server, PORT):
   bh = None
   book = {}
 
+  vc = ValueCalculator()
+
   while True:
     obj = client.read()
 
@@ -34,7 +38,8 @@ def run(server, PORT):
         book[symbol] = []
       book[symbol].extend(orders)
       bh.handleBook(book)
-      	
+
+      vc.feed(obj)
 
     if obj['type'] == 'open':
       if 'BOND' in obj['symbols']:
