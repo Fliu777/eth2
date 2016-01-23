@@ -11,6 +11,9 @@ import Client
 
 from ValueCalculator import ValueCalculator
 
+import BondHandler
+import VALE
+
 def run(server, PORT):
   IP = socket.gethostbyname(server)
   #IP = "1.1.1.1"
@@ -22,9 +25,6 @@ def run(server, PORT):
   client = Client.Client(IP, PORT, logfile)
 
   client.send({"type":"hello", "team": "JANEAVENUE"})
-
-  import BondHandler
-  import VALE
 
   bh = None
   vh=None
@@ -39,7 +39,6 @@ def run(server, PORT):
     obj = client.read()
     if bh:
       bh.floodMarket()
-
     if obj['type'] == "book":
       orders = [obj['buy'],obj['sell'] ]
       symbol = obj['symbol']
@@ -51,38 +50,29 @@ def run(server, PORT):
 
           vc.feed(obj)
       except Exception as e:
+          print(e)
 	  traceback.print_exc()
-
+  
     if obj['type'] == 'open':
       if 'BOND' in obj['symbols']:
          bh = BondHandler.BondHandler(client)
       if 'VALE' in obj['symbols'] and 'VALBZ' in obj['symbols']:
-        print("open?")
-        vh= VALE.VALETrader(client)
-
+        pass#vh= VALE.VALETrader(client)
     if obj['type'] == 'close':
       if 'BOND' in obj['symbols']:
         bh = None
       if 'VALE' in obj['symbols'] or 'VALBZ' in obj['symbols']:
         vh = None
-
     if obj['type'] == 'fill':
       if bh:
         if obj['symbol'] == 'BOND':
           bh.fillOrder(obj)
-    
-    if vh: vh.getOrderBooks(book)
-
-#vh.getOrderBooks(book)
-    t2 = time.time()
-    if t2 - t1 > 1:
-      print("ping")
+    if vh: pass #vh.getOrderBooks(book)
 
     t2 = time.time()
     if t2 - t1 > 5:
       vc.report()
       t1 = t2
-
     time.sleep(0.011)
 
 if __name__ == '__main__':
@@ -97,7 +87,8 @@ if __name__ == '__main__':
     try:
       run(server, port)
     except Exception as e:
-      print(e.message)
+      print(e)
+      #print(e.message)
       pass
     time.sleep(1)
 
