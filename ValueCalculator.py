@@ -1,17 +1,22 @@
 from __future__ import print_function
 import sys
+import time
+import scipy
+
+from scipy import stats
+import numpy as np
 
 class ValueCalculator:
   
   def __init__(self):
     self.stocks = {
-      "BOND": [],
-      "VALBZ": [],
-      "VALE": [],
-      "GS": [],
-      "MS": [],
-      "WFC": [],
-      "XLF": [],
+      "BOND": [[],[]],
+      "VALBZ": [[],[]],
+      "VALE": [[],[]],
+      "GS": [[],[]],
+      "MS": [[],[]],
+      "WFC": [[],[]],
+      "XLF": [[],[]],
     }
 
   def feed(self, obj):
@@ -33,7 +38,8 @@ class ValueCalculator:
         tot += price * size
         num += size
 
-    self.stocks[obj['symbol']].append(tot/num)
+    self.stocks[obj['symbol']][0].append(tot/num)
+    self.stocks[obj['symbol']][1].append(time.time())
 
     # print(tot/num, obj['symbol'])
 
@@ -46,4 +52,22 @@ class ValueCalculator:
       f.write(str(self.stocks['VALE']) + '\n')
       print(self.stocks['VALBZ'][-1])
       print(self.stocks['VALE'][-1])
+
+  def ml(self):
+    for s in self.stocks:
+      t = self.stocks[s][1][-1]
+      i = len(self.stocks[s][1])
+      while i > 0 and self.stocks[s][1][i] < t - 30:
+        i -= 1
+      x = np.array(self.stocks[s][0][-i:])
+      t = np.array(self.stocks[s][1][-i:])
+
+      slope, intercept, r_value, p_value, std_err = stats.linregress(x,t)
+
+      if r_value**2 > 0.7:
+        print(x,t)
+        fy = slope * (t + 30) + intercept
+        print(fy)
+
+
 
