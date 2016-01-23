@@ -85,9 +85,9 @@ class BondHandler:
 	if self.currentPos>0:
 	    self.sendOrder(True, 100 - self.currentPos, 999)
 	else:
-	    self.sendOrder(True, 100, 999)
+	    self.sendOrder(True, 10, 999)
 
 	if self.currentPos<0:
 	    self.sendOrder(False, - self.currentPos + 100, 1001)
 	else:
-	    self.sendOrder(False, 100, 1001)
+	    self.sendOrder(False, 10, 1001)
