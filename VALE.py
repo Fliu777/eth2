@@ -60,21 +60,21 @@ class VALETrader:
         possibleProfit=0
         cost=10
         slippage=5
-        most=5
+        most=3
         # valbz is the liquid one
         if sellpriceLiquid-buypricenonLiquid>0:
             diff=sellpriceLiquid-buypricenonLiquid
             if diff*most-12 > 0:
-                self.sendOrder(False, "VALBZ", most, sellpriceLiquid)            #buy the non liquid
-                self.sendOrder(True, "VALE", most, buypricenonLiquid)              #sell liquid
+                self.sendOrder(False, "VALBZ", most, sellpriceLiquid-1)            #buy the non liquid
+                self.sendOrder(True, "VALE", most, buypricenonLiquid+1)              #sell liquid
                 self.convert(False, most)
                 print("doing smth")
 
         if sellpricenonLiquid-buypriceLiquid>0:
             diff=sellpricenonLiquid-buypriceLiquid
             if diff*most-12 > 0:
-                self.sendOrder(True, "VALBZ", most, buypriceLiquid)            #sell non liquid
-                self.sendOrder(False, "VALE", most, sellpricenonLiquid)              #buy liquid
+                self.sendOrder(True, "VALBZ", most, buypriceLiquid-1)            #sell non liquid
+                self.sendOrder(False, "VALE", most, sellpricenonLiquid+1)              #buy liquid
                 self.convert(True, most)
                 print("reverse arbitrage")
 
