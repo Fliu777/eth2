@@ -57,7 +57,7 @@ def run(server, PORT):
       if obj['symbol'] == 'VALE' or obj['symbol'] == 'VALBZ':
         if vh: vh.getOrderBooks(book)
 
-      vc.feed(obj)
+      vc.feed(obj, t0)
 
     if False and obj['type'] == "out":
       process_outs(my_orders, obj['order_id'], client)
