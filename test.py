@@ -64,7 +64,7 @@ def run(server, PORT):
       vc.feed(obj, t0)
 
     if obj['type'] == "out":
-      process_outs(my_orders, obj['order_id'], client)
+      process_outs(my_orders, obj['order_id'], client, my_orders)
   
     if obj['type'] == 'open':
       if 'BOND' in obj['symbols']:
@@ -90,7 +90,7 @@ def run(server, PORT):
     time.sleep(0.02)
 
 counter = 200000
-def sendOrder(isBuy, amount, price, symbol, client):
+def sendOrder(isBuy, amount, price, symbol, client, orders):
     global counter
     counter+=1
     buy_sell_msg = {
@@ -108,7 +108,9 @@ def sendOrder(isBuy, amount, price, symbol, client):
         buy_sell_msg['dir'] = "SELL"
         client.send(buy_sell_msg)
 
-def process(local_book, symbol, client):
+    orders[counter] = 1
+
+def process(local_book, symbol, client, orders):
     vale_book = local_book[symbol]
     if len(vale_book) >= 5:
 	values = vale_book[-5:-1]
