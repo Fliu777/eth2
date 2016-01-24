@@ -40,6 +40,13 @@ class VALETrader:
             self.connection.send(buy_sell_msg)
 
     def getOrderBooks(self, book):
+
+        for stock in ["GS","MS","WFC"]:
+            if stock in book:
+                try:
+                    self.sendOrder(True,stock, 100, book[stock][-1][0][0][0])
+                except: pass
+
         if 'VALBZ' not in book or 'VALE' not in book:
             return
         liquid=book['VALBZ']
@@ -63,7 +70,6 @@ class VALETrader:
             self.sendOrder(True, "VALE", self.VALEcurLiquidPos, buypricenonLiquid)
             print("dump extra VALE")
 
-
         if self.VALBZcurLiquidPos>0:
             self.sendOrder(False, "VALBZ", self.VALBZcurLiquidPos, sellpriceLiquid)
             print("dump extra VALBZ")
@@ -71,8 +77,6 @@ class VALETrader:
         elif self.VALBZcurLiquidPos<0:
             self.sendOrder(True, "VALBZ", self.VALBZcurLiquidPos, buypriceLiquid)
             print("dump extra VALBZ")
-
-
 
         #print(buypricenonLiquid)
         #print(buypriceLiquid)
@@ -84,21 +88,25 @@ class VALETrader:
         slippage=5
         most=3
         # valbz is the liquid one
-        if sellpriceLiquid-buypricenonLiquid>0:
-            diff=sellpriceLiquid-buypricenonLiquid
+        if buypriceLiquid-buypricenonLiquid>0:
+            diff=buypriceLiquid-sellpricenonLiquid
             if diff*most-10 > 0:
-                self.sendOrder(False, "VALBZ", most, sellpriceLiquid-1)            #buy the non liquid
-                self.sendOrder(True, "VALE", most, buypricenonLiquid+1)              #sell liquid
+                self.sendOrder(False, "VALBZ", most, buypriceLiquid )            #buy the non liquid
+                self.sendOrder(True, "VALE", most, buypricenonLiquid)              #sell liquid
                 self.convert(False, most)
+                self.VALBZcurLiquidPos+=most
+                self.VALEcurLiquidPos-=most
                 print("doing smth")
 
-        if sellpricenonLiquid-buypriceLiquid>0:
-            diff=sellpricenonLiquid-buypriceLiquid
+        if buypricenonLiquid-buypriceLiquid>0:
+            diff=buypricenonLiquid-sellpriceLiquid
             if diff*most-10 > 0:
-                self.sendOrder(True, "VALBZ", most, buypriceLiquid-1)            #sell non liquid
-                self.sendOrder(False, "VALE", most, sellpricenonLiquid+1)              #buy liquid
+                self.sendOrder(True, "VALBZ", most, buypricenonLiquid )            #buy the non liquid
+                self.sendOrder(False, "VALE", most, buypriceLiquid)              #sell liquid
                 self.convert(True, most)
-                print("reverse arbitrage")
+                self.VALBZcurLiquidPos-=most
+                self.VALEcurLiquidPos+=most
+                print("doing smth")
 
     def fillOrder(self, obj): #stock is of type STOCK
         vol=int(obj['size'])

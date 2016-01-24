@@ -56,6 +56,7 @@ class ValueCalculator:
       print(self.stocks['VALE'][-1])
 
   def ml(self):
+    return
     for s in ["GS","MS","WFC"]:
       tt = self.stocks[s][1][-1]
       i = len(self.stocks[s][1])-1
@@ -78,6 +79,7 @@ class ValueCalculator:
            self.sendOrder(False, s, 10, int(math.floor(self.stocks[s][0][-1])))
 
   def sendOrder(self, isBuy, name,amount, price):
+    return
     buy_sell_msg = {
         "type": "add",
         "order_id": random.randint(10000,1000000),
