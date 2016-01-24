@@ -49,7 +49,7 @@ def run(server, PORT):
 
       if False and obj['symbol'] == 'XLF':
       	if process(book, "XLF", client):
-	        book['XLF'] = []
+          book['XLF'] = []
 
       if False and  obj['symbol'] == 'BOND':
         if bh: bh.handleBook(book, obj['symbol'])
@@ -57,7 +57,10 @@ def run(server, PORT):
       if obj['symbol'] == 'VALE' or obj['symbol'] == 'VALBZ':
         if vh: vh.getOrderBooks(book)
 
-      vc.feed(obj, t0)
+      vc.feed(obj)
+
+    if False and obj['type'] == "out":
+      process_outs(my_orders, obj['order_id'], client)
   
     if obj['type'] == 'open':
       if 'BOND' in obj['symbols']:
@@ -118,11 +121,27 @@ def process(local_book, symbol, client):
 	        if order[0] < best_sell:
 			best_sell = order[0]
 
-        sendOrder(True, 10, best_buy, symbol, client)
-        sendOrder(False, 10, best_sell, symbol, client)
+        sendOrder(True, 5, best_buy, symbol, client)
+        sendOrder(False, 5, best_sell, symbol, client)
     
         return True
 
+
+def process_outs(orders, out, client):
+    if out in orders:
+        del order[out]
+
+    for o in orders:
+        order[o] += 1
+	if order[o] > 100:
+	    #Send cancel
+	    client.send({"type": "cancel", "order_id": o})
+
+	    del order[o]
+
+
+    
+        
     
        
 	
