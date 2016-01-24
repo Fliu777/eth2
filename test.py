@@ -59,7 +59,7 @@ def run(server, PORT):
 
       vc.feed(obj)
 
-    if obj['type'] == "out":
+    if False and obj['type'] == "out":
       process_outs(my_orders, obj['order_id'], client)
   
     if obj['type'] == 'open':
