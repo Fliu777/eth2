@@ -87,6 +87,8 @@ class VALETrader:
                 self.sendOrder(False, "VALBZ", most, buypriceLiquid )            #buy the non liquid
                 self.sendOrder(True, "VALE", most, buypricenonLiquid)              #sell liquid
                 self.convert(False, most)
+                self.VALBZcurLiquidPos+=most
+                self.VALEcurLiquidPos-=most
                 print("doing smth")
 
         if buypricenonLiquid-buypriceLiquid>0:
@@ -95,6 +97,8 @@ class VALETrader:
                 self.sendOrder(True, "VALBZ", most, buypricenonLiquid )            #buy the non liquid
                 self.sendOrder(False, "VALE", most, buypriceLiquid)              #sell liquid
                 self.convert(True, most)
+                self.VALBZcurLiquidPos-=most
+                self.VALEcurLiquidPos+=most
                 print("doing smth")
 
     def fillOrder(self, obj): #stock is of type STOCK
