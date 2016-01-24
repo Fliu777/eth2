@@ -48,11 +48,11 @@ def run(server, PORT):
       book[symbol].append(orders)
 
       if obj['symbol'] == 'XLF':
-      	if process(book, "XLF", client):
+      	if process(book, "XLF", client, my_orders):
           book['XLF'] = []
 
       if False and obj['symbol'] == 'WFC':
-        if process(book, "WFC", client):
+        if process(book, "WFC", client, my_orders):
           book['WFC'] = []
 
       if obj['symbol'] == 'BOND':
@@ -64,7 +64,7 @@ def run(server, PORT):
       vc.feed(obj, t0)
 
     if obj['type'] == "out":
-      process_outs(my_orders, obj['order_id'], client, my_orders)
+      process_outs(my_orders, obj['order_id'], client)
   
     if obj['type'] == 'open':
       if 'BOND' in obj['symbols']:
