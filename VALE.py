@@ -3,7 +3,9 @@ class VALETrader:
     def __init__(self,connection):
         print("wtf")
         self.connection=connection
-        self.curLiquidPos=0
+        self.VALEcurLiquidPos=0
+        self.VALBZcurLiquidPos=0
+
         print ("starting?")
 
     def sendOrder(self, isBuy, name,amount, price):
@@ -52,6 +54,26 @@ class VALETrader:
         #print (nonLiquid)
         buypricenonLiquid=nonLiquid[-1][0][0][0]
         sellpricenonLiquid=nonLiquid[-1][1][0][0]
+        print (self.VALEcurLiquidPos)
+        print (self.VALBZcurLiquidPos)
+        if self.VALEcurLiquidPos>0:
+            self.sendOrder(False, "VALE", self.VALEcurLiquidPos, sellpricenonLiquid)
+            print("dump extra VALE")
+        elif self.VALEcurLiquidPos<0:
+            self.sendOrder(True, "VALE", self.VALEcurLiquidPos, buypricenonLiquid)
+            print("dump extra VALE")
+
+
+        if self.VALBZcurLiquidPos>0:
+            self.sendOrder(False, "VALBZ", self.VALBZcurLiquidPos, sellpriceLiquid)
+            print("dump extra VALBZ")
+
+        elif self.VALBZcurLiquidPos<0:
+            self.sendOrder(True, "VALBZ", self.VALBZcurLiquidPos, buypriceLiquid)
+            print("dump extra VALBZ")
+
+
+
         #print(buypricenonLiquid)
         #print(buypriceLiquid)
 
@@ -64,7 +86,7 @@ class VALETrader:
         # valbz is the liquid one
         if sellpriceLiquid-buypricenonLiquid>0:
             diff=sellpriceLiquid-buypricenonLiquid
-            if diff*most-12 > 0:
+            if diff*most-10 > 0:
                 self.sendOrder(False, "VALBZ", most, sellpriceLiquid-1)            #buy the non liquid
                 self.sendOrder(True, "VALE", most, buypricenonLiquid+1)              #sell liquid
                 self.convert(False, most)
@@ -72,7 +94,7 @@ class VALETrader:
 
         if sellpricenonLiquid-buypriceLiquid>0:
             diff=sellpricenonLiquid-buypriceLiquid
-            if diff*most-12 > 0:
+            if diff*most-10 > 0:
                 self.sendOrder(True, "VALBZ", most, buypriceLiquid-1)            #sell non liquid
                 self.sendOrder(False, "VALE", most, sellpricenonLiquid+1)              #buy liquid
                 self.convert(True, most)
@@ -80,10 +102,19 @@ class VALETrader:
 
     def fillOrder(self, obj): #stock is of type STOCK
         vol=int(obj['size'])
-        if obj['dir']=="BUY":
-            self.LiquidPos+=vol
+        print("filled ")
+        print(obj)
+        if obj['symbol']=='VALE':
+
+            if obj['dir']=="BUY":
+                self.VALEcurLiquidPos+=vol
+            else:
+                self.VALEcurLiquidPos-=vol
         else:
-            self.LiquidPos-=vol
+            if obj['dir']=="BUY":
+                self.VALBZcurLiquidPos+=vol
+            else:
+                self.VALBZcurLiquidPos-=vol
 
 
 

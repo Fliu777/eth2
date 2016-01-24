@@ -31,13 +31,14 @@ def run(server, PORT):
   book = {}
 
   vc = ValueCalculator(client)
+  my_orders = {}
 
   t0 = time.time()
   t1 = time.time()
 
   while True:
     obj = client.read()
-    if bh:
+    if False and bh:
       bh.floodMarket()
     if obj['type'] == "book":
       orders = [obj['buy'],obj['sell']]
@@ -46,7 +47,11 @@ def run(server, PORT):
         book[symbol] = []
       book[symbol].append(orders)
 
-      if obj['symbol'] == 'BOND':
+      if False and obj['symbol'] == 'XLF':
+      	if process(book, "XLF", client):
+	        book['XLF'] = []
+
+      if False and  obj['symbol'] == 'BOND':
         if bh: bh.handleBook(book, obj['symbol'])
 
       if obj['symbol'] == 'VALE' or obj['symbol'] == 'VALBZ':
@@ -68,12 +73,62 @@ def run(server, PORT):
       if bh:
         if obj['symbol'] == 'BOND':
           bh.fillOrder(obj)
+      if vh and (obj['symbol']=='VALE' or obj['symbol']=='VALBZ'):
+          vh.fillOrder(obj)
 
     t2 = time.time()
     if t2 - t1 > 5:
       vc.ml()
       t1 = t2
     time.sleep(0.02)
+
+counter = 200000
+def sendOrder(isBuy, amount, price, symbol, client):
+    global counter
+    counter+=1
+    buy_sell_msg = {
+        "type": "add",
+        "order_id": counter,
+        "symbol": symbol,
+        "dir": None,
+        "price": price,
+        "size": amount,
+    }
+    if isBuy:
+        buy_sell_msg['dir'] = "BUY"
+        client.send(buy_sell_msg)
+    else:
+        buy_sell_msg['dir'] = "SELL"
+        client.send(buy_sell_msg)
+
+def process(local_book, symbol, client):
+    vale_book = local_book[symbol]
+    if len(vale_book) >= 5:
+	values = vale_book[-5:-1]
+
+	best_sell = 10000000
+	best_buy = 0
+
+	for frame in values:
+            for order in frame[0]:
+	        if order[0] > best_buy:
+			best_buy = order[0]
+	
+            for order in frame[1]:
+	        if order[0] < best_sell:
+			best_sell = order[0]
+
+        sendOrder(True, 10, best_buy, symbol, client)
+        sendOrder(False, 10, best_sell, symbol, client)
+    
+        return True
+
+    
+       
+	
+
+
+
 
 if __name__ == '__main__':
   server = "test-exch-janeavenue"
