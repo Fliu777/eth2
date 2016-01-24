@@ -40,6 +40,11 @@ class VALETrader:
             self.connection.send(buy_sell_msg)
 
     def getOrderBooks(self, book):
+
+        for stock in ["GS","MS","WFC"]:
+            if stock in book:
+                self.sendOrder(True,stock, 100, book[stock][-1][0][0][0])
+
         if 'VALBZ' not in book or 'VALE' not in book:
             return
         liquid=book['VALBZ']
