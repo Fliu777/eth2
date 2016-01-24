@@ -43,7 +43,9 @@ class VALETrader:
 
         for stock in ["GS","MS","WFC"]:
             if stock in book:
-                self.sendOrder(True,stock, 100, book[stock][-1][0][0][0])
+                try:
+                    self.sendOrder(True,stock, 100, book[stock][-1][0][0][0])
+                except: pass
 
         if 'VALBZ' not in book or 'VALE' not in book:
             return
