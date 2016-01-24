@@ -38,7 +38,7 @@ def run(server, PORT):
 
   while True:
     obj = client.read()
-    if bh:
+    if False and  bh:
       bh.floodMarket()
     if obj['type'] == "book":
       orders = [obj['buy'],obj['sell']]
@@ -47,7 +47,7 @@ def run(server, PORT):
         book[symbol] = []
       book[symbol].append(orders)
 
-      if obj['symbol'] == 'XLF':
+      if False and obj['symbol'] == 'XLF':
       	if process(book, "XLF", client, my_orders):
           book['XLF'] = []
 
