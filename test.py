@@ -30,7 +30,7 @@ def run(server, PORT):
   vh=None
   book = {}
 
-  vc = ValueCalculator()
+  vc = ValueCalculator(client)
 
   t0 = time.time()
   t1 = time.time()
@@ -52,7 +52,7 @@ def run(server, PORT):
       if obj['symbol'] == 'VALE' or obj['symbol'] == 'VALBZ':
         if vh: vh.getOrderBooks(book)
 
-      vc.feed(obj)
+      vc.feed(obj, t0)
   
     if obj['type'] == 'open':
       if 'BOND' in obj['symbols']:
@@ -71,7 +71,7 @@ def run(server, PORT):
 
     t2 = time.time()
     if t2 - t1 > 5:
-      vc.report()
+      vc.ml()
       t1 = t2
     time.sleep(0.02)
 

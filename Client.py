@@ -17,7 +17,7 @@ class Client:
   def send(self, obj):
     data = json.dumps(obj)
     print(data, file=self.file)
-    print(data)
+    if self.logf: self.logf.write(data + '\n')
     return data
 
   def close(self):

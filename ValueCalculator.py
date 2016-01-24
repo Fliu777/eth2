@@ -1,14 +1,16 @@
 from __future__ import print_function
+import math
 import sys
 import time
 import scipy
-
+import random
 from scipy import stats
 import numpy as np
 
 class ValueCalculator:
   
-  def __init__(self):
+  def __init__(self, client):
+    self.connection = client
     self.stocks = {
       "BOND": [[],[]],
       "VALBZ": [[],[]],
@@ -19,7 +21,7 @@ class ValueCalculator:
       "XLF": [[],[]],
     }
 
-  def feed(self, obj):
+  def feed(self, obj, t0):
     if len(obj['buy']) == 0 or len(obj['sell']) == 0:
       return
 
@@ -39,7 +41,7 @@ class ValueCalculator:
         num += size
 
     self.stocks[obj['symbol']][0].append(tot/num)
-    self.stocks[obj['symbol']][1].append(time.time())
+    self.stocks[obj['symbol']][1].append(time.time() - t0)
 
     # print(tot/num, obj['symbol'])
 
@@ -55,19 +57,42 @@ class ValueCalculator:
 
   def ml(self):
     for s in self.stocks:
-      t = self.stocks[s][1][-1]
-      i = len(self.stocks[s][1])
-      while i > 0 and self.stocks[s][1][i] < t - 30:
+      tt = self.stocks[s][1][-1]
+      i = len(self.stocks[s][1])-1
+      while i >= 0 and self.stocks[s][1][i] > tt - 20:
         i -= 1
+      
       x = np.array(self.stocks[s][0][-i:])
       t = np.array(self.stocks[s][1][-i:])
+      
+      if len(x) < 10: return
+      slope, intercept, r_value, p_value, std_err = stats.linregress(t, x)
 
-      slope, intercept, r_value, p_value, std_err = stats.linregress(x,t)
-
-      if r_value**2 > 0.7:
+      if r_value**2 > 0.6:
         print(x,t)
-        fy = slope * (t + 30) + intercept
-        print(fy)
+        print(slope, intercept)
+        fy = slope * (tt + 20) + intercept
+        if slope > 0:
+           self.sendOrder(True, s, 10, int(math.ceil(self.stocks[s][0][-1])))
+        else: #if fy/self.stocks[s][0][-1] < 0.99:
+           self.sendOrder(False, s, 10, int(math.floor(self.stocks[s][0][-1])))
+
+  def sendOrder(self, isBuy, name,amount, price):
+    buy_sell_msg = {
+        "type": "add",
+        "order_id": random.randint(10000,1000000),
+        "symbol": name,
+        "dir": None,
+        "price": price,
+        "size": amount,
+    }
+    print(buy_sell_msg)
+    if isBuy:
+      buy_sell_msg['dir'] = "BUY"
+      self.connection.send(buy_sell_msg)
+    else:
+      buy_sell_msg['dir'] = "SELL"
+      self.connection.send(buy_sell_msg)
 
 
 
