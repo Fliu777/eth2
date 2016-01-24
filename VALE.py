@@ -102,7 +102,10 @@ class VALETrader:
 
     def fillOrder(self, obj): #stock is of type STOCK
         vol=int(obj['size'])
+        print("filled ")
+        print(obj)
         if obj['symbol']=='VALE':
+
             if obj['dir']=="BUY":
                 self.VALEcurLiquidPos+=vol
             else:
