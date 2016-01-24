@@ -54,7 +54,8 @@ class VALETrader:
         #print (nonLiquid)
         buypricenonLiquid=nonLiquid[-1][0][0][0]
         sellpricenonLiquid=nonLiquid[-1][1][0][0]
-
+        print (self.VALEcurLiquidPos)
+        print (self.VALBZcurLiquidPos)
         if self.VALEcurLiquidPos>0:
             self.sendOrder(False, "VALE", self.VALEcurLiquidPos, sellpricenonLiquid)
             print("dump extra")
@@ -85,7 +86,7 @@ class VALETrader:
         # valbz is the liquid one
         if sellpriceLiquid-buypricenonLiquid>0:
             diff=sellpriceLiquid-buypricenonLiquid
-            if diff*most-12 > 0:
+            if diff*most-10 > 0:
                 self.sendOrder(False, "VALBZ", most, sellpriceLiquid-1)            #buy the non liquid
                 self.sendOrder(True, "VALE", most, buypricenonLiquid+1)              #sell liquid
                 self.convert(False, most)
@@ -93,7 +94,7 @@ class VALETrader:
 
         if sellpricenonLiquid-buypriceLiquid>0:
             diff=sellpricenonLiquid-buypriceLiquid
-            if diff*most-12 > 0:
+            if diff*most-10 > 0:
                 self.sendOrder(True, "VALBZ", most, buypriceLiquid-1)            #sell non liquid
                 self.sendOrder(False, "VALE", most, sellpricenonLiquid+1)              #buy liquid
                 self.convert(True, most)
