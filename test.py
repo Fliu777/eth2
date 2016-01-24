@@ -63,8 +63,7 @@ def run(server, PORT):
 
       vc.feed(obj, t0)
 
-    if obj['type'] == "out":
-      process_outs(my_orders, obj['order_id'], client)
+    #if obj['type'] == "out":
   
     if obj['type'] == 'open':
       if 'BOND' in obj['symbols']:
@@ -129,25 +128,20 @@ def process(local_book, symbol, client, orders):
 
         sendOrder(True, 9, best_buy, symbol, client, orders)
         sendOrder(False, 9, best_sell, symbol, client, orders)
-    
+    	process_outs(orders,None, client)	
+
         return True
 
 
 def process_outs(orders, out, client):
-    orders[out] = 1
-
-    if out in orders:
-        del orders[out]
 
     deleteable = []
     for o in orders:
         orders[o] += 1
-	if orders[o] > 5:
+	if orders[o] > 3:
 	    #Send cancel
 	    client.send({"type": "cancel", "order_id": o})
 	    deleteable.append(o)
-
-
     for o in deleteable:
         del orders[o]
 

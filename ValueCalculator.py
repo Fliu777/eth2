@@ -56,6 +56,7 @@ class ValueCalculator:
       print(self.stocks['VALE'][-1])
 
   def ml(self):
+    return
     for s in ["GS","MS","WFC"]:
       tt = self.stocks[s][1][-1]
       i = len(self.stocks[s][1])-1
