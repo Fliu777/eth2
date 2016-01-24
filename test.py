@@ -139,13 +139,17 @@ def process_outs(orders, out, client):
     if out in orders:
         del orders[out]
 
+    deleteable = []
     for o in orders:
         orders[o] += 1
 	if orders[o] > 5:
 	    #Send cancel
 	    client.send({"type": "cancel", "order_id": o})
+	    deleteable.append(o)
 
-	    del orders[o]
+
+    for o in deleteable:
+        del orders[o]
 
 
     
