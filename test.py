@@ -30,15 +30,15 @@ def run(server, PORT):
   vh=None
   book = {}
 
+  vc = ValueCalculator(client)
   my_orders = {}
-  vc = ValueCalculator()
 
   t0 = time.time()
   t1 = time.time()
 
   while True:
     obj = client.read()
-    if bh:
+    if False and bh:
       bh.floodMarket()
     if obj['type'] == "book":
       orders = [obj['buy'],obj['sell']]
@@ -47,15 +47,15 @@ def run(server, PORT):
         book[symbol] = []
       book[symbol].append(orders)
 
-      if obj['symbol'] == 'XLF':
+      if False and obj['symbol'] == 'XLF':
       	if process(book, "XLF", client):
           book['XLF'] = []
 
-      if obj['symbol'] == 'BOND':
-        bh.handleBook(book, obj['symbol'])
+      if False and  obj['symbol'] == 'BOND':
+        if bh: bh.handleBook(book, obj['symbol'])
 
       if obj['symbol'] == 'VALE' or obj['symbol'] == 'VALBZ':
-        vh.getOrderBooks(book)
+        if vh: vh.getOrderBooks(book)
 
       vc.feed(obj)
 
@@ -76,10 +76,12 @@ def run(server, PORT):
       if bh:
         if obj['symbol'] == 'BOND':
           bh.fillOrder(obj)
+      if vh and (obj['symbol']=='VALE' or obj['symbol']=='VALBZ'):
+          vh.fillOrder(obj)
 
     t2 = time.time()
     if t2 - t1 > 5:
-      vc.report()
+      vc.ml()
       t1 = t2
     time.sleep(0.02)
 
