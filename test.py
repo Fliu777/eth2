@@ -51,6 +51,10 @@ def run(server, PORT):
       	if process(book, "XLF", client):
           book['XLF'] = []
 
+      if obj['symbol'] == 'WFC':
+        if process(book, "WFC", client):
+          book['WFC'] = []
+
       if obj['symbol'] == 'BOND':
         if bh: bh.handleBook(book, obj['symbol'])
 
