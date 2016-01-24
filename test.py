@@ -38,7 +38,7 @@ def run(server, PORT):
 
   while True:
     obj = client.read()
-    if False and  bh:
+    if bh:
       bh.floodMarket()
     if obj['type'] == "book":
       orders = [obj['buy'],obj['sell']]
@@ -47,11 +47,11 @@ def run(server, PORT):
         book[symbol] = []
       book[symbol].append(orders)
 
-      if False and obj['symbol'] == 'XLF':
+      if obj['symbol'] == 'XLF':
       	if process(book, "XLF", client, my_orders):
           book['XLF'] = []
 
-      if False and obj['symbol'] == 'WFC':
+      if obj['symbol'] == 'WFC':
         if process(book, "WFC", client, my_orders):
           book['WFC'] = []
 
@@ -63,8 +63,8 @@ def run(server, PORT):
 
       vc.feed(obj, t0)
 
-    if obj['type'] == "out":
-      process_outs(my_orders, obj['order_id'], client)
+    #if obj['type'] == "out":
+    #  process_outs(my_orders, obj['order_id'], client)
   
     if obj['type'] == 'open':
       if 'BOND' in obj['symbols']:
