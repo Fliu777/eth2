@@ -51,7 +51,7 @@ def run(server, PORT):
       	if process(book, "XLF", client):
           book['XLF'] = []
 
-      if obj['symbol'] == 'WFC':
+      if False and obj['symbol'] == 'WFC':
         if process(book, "WFC", client):
           book['WFC'] = []
 
@@ -125,8 +125,8 @@ def process(local_book, symbol, client):
 	        if order[0] < best_sell:
 			best_sell = order[0]
 
-        sendOrder(True, 5, best_buy, symbol, client)
-        sendOrder(False, 5, best_sell, symbol, client)
+        sendOrder(True, 9, best_buy, symbol, client)
+        sendOrder(False, 9, best_sell, symbol, client)
     
         return True
 
