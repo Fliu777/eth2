@@ -49,7 +49,7 @@ def run(server, PORT):
 
       if obj['symbol'] == 'XLF':
       	if process(book, "XLF", client):
-	  book['XLF'] = []
+          book['XLF'] = []
 
       if obj['symbol'] == 'BOND':
         bh.handleBook(book, obj['symbol'])
@@ -131,7 +131,7 @@ def process_outs(orders, out, client):
 
     for o in orders:
         order[o] += 1
-	if order[o] > 3:
+	if order[o] > 100:
 	    #Send cancel
 	    client.send({"type": "cancel", "order_id": o})
 
