@@ -47,7 +47,7 @@ def run(server, PORT):
         book[symbol] = []
       book[symbol].append(orders)
 
-      if False and obj['symbol'] == 'XLF':
+      if obj['symbol'] == 'XLF':
       	if process(book, "XLF", client):
           book['XLF'] = []
 
