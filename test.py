@@ -141,7 +141,7 @@ def process_outs(orders, out, client):
 
     for o in orders:
         orders[o] += 1
-	if orders[o] > 100:
+	if orders[o] > 5:
 	    #Send cancel
 	    client.send({"type": "cancel", "order_id": o})
 
