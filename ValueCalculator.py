@@ -56,7 +56,7 @@ class ValueCalculator:
       print(self.stocks['VALE'][-1])
 
   def ml(self):
-    for s in self.stocks:
+    for s in ["GS","MS","WFC"]:
       tt = self.stocks[s][1][-1]
       i = len(self.stocks[s][1])-1
       while i >= 0 and self.stocks[s][1][i] > tt - 20:
@@ -68,13 +68,13 @@ class ValueCalculator:
       if len(x) < 10: return
       slope, intercept, r_value, p_value, std_err = stats.linregress(t, x)
 
-      if r_value**2 > 0.6:
+      if r_value**2 > 0.7:
         print(x,t)
         print(slope, intercept)
         fy = slope * (tt + 20) + intercept
-        if slope > 0:
+        if fy/self.stocks[s][0][-1] > 1.01:
            self.sendOrder(True, s, 10, int(math.ceil(self.stocks[s][0][-1])))
-        else: #if fy/self.stocks[s][0][-1] < 0.99:
+        if fy/self.stocks[s][0][-1] < 0.99:
            self.sendOrder(False, s, 10, int(math.floor(self.stocks[s][0][-1])))
 
   def sendOrder(self, isBuy, name,amount, price):

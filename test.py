@@ -38,7 +38,7 @@ def run(server, PORT):
 
   while True:
     obj = client.read()
-    if False and bh:
+    if bh:
       bh.floodMarket()
     if obj['type'] == "book":
       orders = [obj['buy'],obj['sell']]
@@ -47,19 +47,23 @@ def run(server, PORT):
         book[symbol] = []
       book[symbol].append(orders)
 
-      if False and obj['symbol'] == 'XLF':
-      	if process(book, "XLF", client):
+      if obj['symbol'] == 'XLF':
+      	if process(book, "XLF", client, my_orders):
           book['XLF'] = []
 
-      if False and  obj['symbol'] == 'BOND':
+      if False and obj['symbol'] == 'WFC':
+        if process(book, "WFC", client, my_orders):
+          book['WFC'] = []
+
+      if obj['symbol'] == 'BOND':
         if bh: bh.handleBook(book, obj['symbol'])
 
       if obj['symbol'] == 'VALE' or obj['symbol'] == 'VALBZ':
         if vh: vh.getOrderBooks(book)
 
-      vc.feed(obj)
+      vc.feed(obj, t0)
 
-    if False and obj['type'] == "out":
+    if obj['type'] == "out":
       process_outs(my_orders, obj['order_id'], client)
   
     if obj['type'] == 'open':
@@ -86,7 +90,7 @@ def run(server, PORT):
     time.sleep(0.02)
 
 counter = 200000
-def sendOrder(isBuy, amount, price, symbol, client):
+def sendOrder(isBuy, amount, price, symbol, client, orders):
     global counter
     counter+=1
     buy_sell_msg = {
@@ -104,7 +108,9 @@ def sendOrder(isBuy, amount, price, symbol, client):
         buy_sell_msg['dir'] = "SELL"
         client.send(buy_sell_msg)
 
-def process(local_book, symbol, client):
+    orders[counter] = 1
+
+def process(local_book, symbol, client, orders):
     vale_book = local_book[symbol]
     if len(vale_book) >= 5:
 	values = vale_book[-5:-1]
@@ -121,23 +127,29 @@ def process(local_book, symbol, client):
 	        if order[0] < best_sell:
 			best_sell = order[0]
 
-        sendOrder(True, 5, best_buy, symbol, client)
-        sendOrder(False, 5, best_sell, symbol, client)
+        sendOrder(True, 9, best_buy, symbol, client, orders)
+        sendOrder(False, 9, best_sell, symbol, client, orders)
     
         return True
 
 
 def process_outs(orders, out, client):
-    if out in orders:
-        del order[out]
+    orders[out] = 1
 
+    if out in orders:
+        del orders[out]
+
+    deleteable = []
     for o in orders:
-        order[o] += 1
-	if order[o] > 100:
+        orders[o] += 1
+	if orders[o] > 5:
 	    #Send cancel
 	    client.send({"type": "cancel", "order_id": o})
+	    deleteable.append(o)
 
-	    del order[o]
+
+    for o in deleteable:
+        del orders[o]
 
 
     
