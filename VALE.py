@@ -81,7 +81,7 @@ class VALETrader:
         slippage=5
         most=3
         # valbz is the liquid one
-        if buypriceLiquid-sellpricenonLiquid>0:
+        if buypriceLiquid-buypricenonLiquid>0:
             diff=buypriceLiquid-sellpricenonLiquid
             if diff*most-10 > 0:
                 self.sendOrder(False, "VALBZ", most, buypriceLiquid )            #buy the non liquid
@@ -89,7 +89,7 @@ class VALETrader:
                 self.convert(False, most)
                 print("doing smth")
 
-        if buypricenonLiquid-sellpriceLiquid>0:
+        if buypricenonLiquid-buypriceLiquid>0:
             diff=buypricenonLiquid-sellpriceLiquid
             if diff*most-10 > 0:
                 self.sendOrder(True, "VALBZ", most, buypricenonLiquid )            #buy the non liquid
