@@ -73,6 +73,8 @@ def run(server, PORT):
       if bh:
         if obj['symbol'] == 'BOND':
           bh.fillOrder(obj)
+      if vh and (obj['symbol']=='VALE' or obj['symbol']=='VALBZ'):
+          vh.fillOrder(obj)
 
     t2 = time.time()
     if t2 - t1 > 5:
