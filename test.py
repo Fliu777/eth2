@@ -51,7 +51,7 @@ def run(server, PORT):
       	if process(book, "XLF", client):
 	        book['XLF'] = []
 
-      if obj['symbol'] == 'BOND':
+      if False and  obj['symbol'] == 'BOND':
         if bh: bh.handleBook(book, obj['symbol'])
 
       if obj['symbol'] == 'VALE' or obj['symbol'] == 'VALBZ':
