@@ -132,6 +132,8 @@ def process(local_book, symbol, client):
 
 
 def process_outs(orders, out, client):
+    orders[out] = 1
+
     if out in orders:
         del order[out]
 
